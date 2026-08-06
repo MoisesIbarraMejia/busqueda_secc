@@ -1,68 +1,151 @@
-# Busca-T — Sistema de Consulta Territorial (IECM)
+# Busca Secc — Sistema de Consulta de Secciones Electorales (IECM)
 
-**Busca-T** es una plataforma web interactiva desarrollada para el [Instituto Electoral de la Ciudad de México (IECM)](https://www.iecm.mx/) que permite a la ciudadanía ubicar de manera inmediata su **Unidad Territorial**, así como su **Mesa Receptora de Votación y Opinión** correspondiente al Marco Geográfico de Participación Ciudadana.
+**Busca Secc** es una plataforma web interactiva desarrollada para el **Instituto Electoral de la Ciudad de México (IECM)** que permite a la ciudadanía localizar de manera inmediata la **Sección Electoral** a la que pertenece dentro de la Ciudad de México.
 
-La aplicación oficial se encuentra disponible en: [geoutcdmx.iecm.mx/busquedas_ut/home.html](https://geoutcdmx.iecm.mx/busquedas_ut/home.html)
+El sistema ofrece dos métodos de consulta para facilitar la ubicación de la sección electoral correspondiente:
 
----
+- **Ubicación en tiempo real (GPS)**.
+- **Búsqueda por calle o domicilio**.
 
-## Características del Proyecto
-
-* **Ubicación en Tiempo Real (GPS)**: Permite al usuario localizar de forma automatizada su Unidad Territorial utilizando el sistema de posicionamiento global del dispositivo móvil o de escritorio.
-* **Búsqueda por Atributos Alfanuméricos**: Motor de búsqueda dinámico para indexar calles, avenidas y colonias dentro de la Ciudad de México.
-* **Ligero y Eficiente**: Construido con tecnologías web nativas, asegurando una carga rápida sin la sobrecarga de frameworks modernos.
-* **Integración Institucional**: Diseñado específicamente para los procesos de presupuesto participativo y elecciones de las Comisiones de Participación Comunitaria (COPACO).
+Su objetivo es acercar la información geoelectoral a la ciudadanía de forma rápida, sencilla e intuitiva, facilitando la identificación de la sección electoral para distintos procesos organizados por el IECM.
 
 ---
 
-## Stack Tecnológico
+# Características del Proyecto
 
-El proyecto está desarrollado utilizando una arquitectura limpia y sin dependencias externas complejas:
+- **Ubicación en Tiempo Real (GPS):** Obtiene la ubicación del usuario mediante la API de Geolocalización del navegador para identificar automáticamente la Sección Electoral correspondiente.
 
-* **Frontend**: 
-  * `HTML5` para la estructura semántica.
-  * `CSS3` para el diseño visual, adaptabilidad móvil (Responsive Design) y estilos de componentes.
-  * `JavaScript (Vanilla JS)` para el consumo de la API de Geolocalización nativa del navegador, animaciones y manejo dinámico de la interfaz de usuario.
-* **Backend**:
-  * `PHP` para la lógica del servidor, procesamiento de las cadenas de búsqueda por calle/dirección y saneamiento de datos entrantes.
-* **Base de Datos**:
-  * Servidor relacional de base de datos para almacenar y consultar el Marco Geográfico Electoral y las delimitaciones de las Unidades Territoriales.
+- **Búsqueda por Calle o Domicilio:** Permite localizar una Sección Electoral mediante el nombre de una calle, avenida o dirección registrada dentro de la Ciudad de México.
 
----
+- **Consulta Geoespacial:** El sistema realiza consultas espaciales sobre la cartografía electoral oficial para determinar la sección donde se encuentra el usuario o el domicilio consultado.
 
-## Funcionalidades Clave
+- **Ligero y Eficiente:** Desarrollado utilizando tecnologías web nativas para ofrecer tiempos de respuesta rápidos y una interfaz sencilla.
 
-1. **Módulo "¡Ubícate al instante!"**: Consume la API de Geolocalización de JavaScript. Tras obtener el par de coordenadas `(latitud, longitud)`, ejecuta una solicitud asíncrona hacia el backend en PHP para determinar el polígono electoral respectivo.
-2. **Módulo "Buscar por calle"**: Entrada de texto autocompletable mediante peticiones dinámicas que filtra la cartografía de la CDMX en la base de datos a partir del nombre de la vialidad ingresada.
+- **Integración Institucional:** Diseñado para apoyar los procesos de difusión e información geoelectoral del Instituto Electoral de la Ciudad de México.
 
 ---
 
-## Instalación y Despliegue Local
+# Stack Tecnológico
 
-Sigue estos pasos para montar un entorno de desarrollo para el sistema:
+El proyecto fue desarrollado utilizando tecnologías web ligeras y de fácil mantenimiento.
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone https://github.com
-   cd busca-t-iecm
-   ```
+## Frontend
 
-2. **Configuración del Servidor Web**:
-   * Asegúrate de mover los archivos a la raíz de tu servidor local (ej. `/var/www/html/` en Apache o la carpeta `htdocs` en XAMPP).
-   * La base del backend requiere **PHP 7.4 o superior**.
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
 
-3. **Configuración de la Base de Datos**:
-   * Importa el esquema SQL de las Unidades Territoriales de la CDMX proporcionado en el directorio correspondiente.
-   * Modifica los parámetros de conexión en el archivo de configuración PHP (ej. `config.php` o `conexion.php`).
+Utiliza la API nativa de Geolocalización del navegador para obtener la ubicación del usuario.
 
-4. **Acceso**:
-   * Abre tu navegador preferido e ingresa a: `http://localhost/busca-t-iecm/home.html`
+## Backend
+
+- PHP
+
+Responsable del procesamiento de consultas, búsqueda por calles y comunicación con la base de datos geográfica.
+
+## Base de Datos
+
+Base de datos geográfica que almacena:
+
+- Secciones Electorales.
+- Calles y vialidades.
+- Información cartográfica utilizada para las consultas espaciales.
+
+---
+
+# Funcionalidades
+
+## Consulta mediante ubicación
+
+El usuario puede utilizar la ubicación actual de su dispositivo para conocer automáticamente la Sección Electoral donde se encuentra.
+
+El sistema:
+
+1. Solicita permisos de ubicación.
+2. Obtiene la latitud y longitud.
+3. Envía las coordenadas al servidor.
+4. Determina la Sección Electoral correspondiente.
+5. Devuelve la información al usuario.
 
 ---
 
-## Requisitos de Seguridad para Producción
+## Consulta por calle
 
-* **Protocolo HTTPS**: Indispensable para producción. Los navegadores modernos bloquean el uso de las funciones de geolocalización por GPS (`navigator.geolocation`) si el sitio no cuenta con un certificado SSL válido.
-* **Saneamiento de Inputs**: Las consultas dirigidas al buscador de calles vía PHP deben estar protegidas contra inyecciones SQL utilizando sentencias preparadas (PDO/MySQLi).
+Permite localizar una Sección Electoral mediante la búsqueda de una calle o domicilio.
+
+El sistema realiza búsquedas dinámicas sobre la base de datos y devuelve la información correspondiente a la ubicación consultada.
 
 ---
+
+# Instalación
+
+## Clonar el repositorio
+
+```bash
+git clone https://github.com/MoisesIbarraMejia/busqueda_secc.git
+```
+
+```bash
+cd busqueda_secc
+```
+
+---
+
+## Configurar servidor web
+
+Copiar el proyecto al directorio de su servidor web.
+
+Ejemplo:
+
+- XAMPP → `htdocs`
+- Apache → `/var/www/html`
+
+Se requiere:
+
+- PHP 7.4 o superior.
+
+---
+
+## Configurar la base de datos
+
+Importar la base de datos utilizada por el sistema.
+
+Posteriormente configurar los parámetros de conexión dentro del archivo correspondiente.
+
+---
+
+## Ejecutar
+
+Abrir:
+
+```
+http://localhost/busqueda_secciones/home.html
+```
+
+---
+
+# Seguridad
+
+## HTTPS
+
+Para utilizar la geolocalización es obligatorio desplegar el sistema mediante HTTPS en ambientes de producción.
+
+Los navegadores modernos bloquean el acceso al GPS cuando el sitio no cuenta con un certificado SSL válido.
+
+---
+
+## Protección de consultas
+
+Las consultas realizadas desde PHP deben implementarse utilizando sentencias preparadas para evitar ataques de inyección SQL.
+
+---
+
+# Autor
+
+**Moisés Ibarra Mejía**
+
+Ingeniero en Geomática
+
+Instituto Electoral de la Ciudad de México (IECM)
+
+Especializado en desarrollo de herramientas geoespaciales, sistemas cartográficos y aplicaciones web para información geoelectoral.
