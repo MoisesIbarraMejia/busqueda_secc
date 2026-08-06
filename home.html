@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- <meta name="description" content="Encuentra tu Unidad Territorial y tu Mesa Receptora de Votación y Opinión del IECM. Busca-T: consulta por ubicación GPS o por tu calle en la Ciudad de México."> -->
+<meta name="description" content="Encuentra tu Unidad Territorial del IECM. Busca-T: consulta por ubicación GPS o por tu calle en la Ciudad de México.">
+
+<link rel="icon" href="/logoiecm.png" sizes="48x48" type="image/png">
+<link rel="icon" href="/logoiecm.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="/logoiecm.png">
+
+<title>Encuentra tu Unidad Territorial (Busca-T)</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+
+<style>
+
+:root{
+--morado:#8A3880;
+--morado-oscuro:#6b2a63;
+--verde:#00616b;
+--texto:#2c3345;
+--blanco:#ffffff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* body{
+font-family:'Inter',sans-serif;
+background:#0d0c1d;
+color:white;
+min-height:100vh;
+overflow-x:hidden;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+padding:40px 0;
+} */
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#0d0c1d;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+    padding:0;
+}
+
+
+
+/* fondo partículas */
+#particles-js{
+position:fixed;
+/* width:100%; */
+height:100dvh;
+z-index:-1;
+}
+
+/* contenedor principal */
+/* 
+.main{
+    max-width:1000px;
+    padding:40px 20px;
+    text-align:center;
+    width:100%;
+} */
+
+.main{
+    flex:1;
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;   
+    align-items:center;       
+
+    text-align:center;
+    padding:20px 20px;
+}
+
+
+
+/* titulo */
+.titulo{
+font-size:42px;
+font-weight:700;
+margin-bottom:10px;
+background:linear-gradient(120deg,#fff,var(--morado));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.sub_titulo {
+font-size:28px;
+font-weight:700;
+margin-bottom:10px;
+background:linear-gradient(120deg,#fff,var(--morado));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.subtitulo{
+font-size:30px;
+font-weight:700;
+margin-bottom:10px;
+background:linear-gradient(120deg,#fff,var(--morado));
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+.sub{
+opacity:.8;
+margin-bottom:30px;
+font-size:17px;
+}
+
+/* grid opciones */
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:40px;
+}
+
+/* .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:30px;
+} */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:30px;
+    width:100%;
+    max-width:900px; 
+}
+
+/* tarjeta */
+
+.card{
+background:rgba(255,255,255,0.07);
+border:1px solid rgba(255,255,255,0.1);
+border-radius:20px;
+padding:40px;
+backdrop-filter:blur(12px);
+transition:.35s;
+cursor:pointer;
+position:relative;
+overflow:hidden;
+/* para igualar alturas */
+min-height: 280px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+
+.card::before{
+content:'';
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:4px;
+background:linear-gradient(90deg,var(--morado),var(--verde));
+}
+
+/* ICONO BASE */
+.icon img{
+width:100px;
+height:auto;
+display:block;
+margin:0 auto;
+margin-bottom:10px;
+
+/* estado inicial */
+opacity:0;
+transform:translateY(20px) scale(.9);
+
+/* animaciones */
+animation:iconIn 0.8s ease forwards, floatIcon 4s ease-in-out infinite 1s;
+}
+
+/* entrada */
+@keyframes iconIn{
+0%{
+    opacity:0;
+    transform:translateY(25px) scale(.85);
+}
+60%{
+    opacity:1;
+    transform:translateY(-5px) scale(1.05);
+}
+100%{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+}
+
+/* flotación */
+@keyframes floatIcon{
+0%,100%{
+    transform:translateY(0);
+}
+50%{
+    transform:translateY(-6px);
+}
+}
+
+.card h2{
+font-size:22px;
+margin-bottom:10px;
+}
+
+.card p{
+font-size:15px;
+opacity:.8;
+margin-bottom:25px;
+}
+
+/* boton */
+
+.btn{
+display:inline-block;
+padding:12px 28px;
+border-radius:30px;
+font-weight:600;
+text-decoration:none;
+color:white;
+background:linear-gradient(135deg,var(--morado),var(--morado-oscuro));
+transition:.25s;
+}
+
+.btn:hover{
+transform:translateY(-2px);
+box-shadow:0 10px 25px rgba(138,56,128,.5);
+}
+
+/* footer */
+/* .footer{
+position:absolute;
+bottom:15px;
+width:100%;
+text-align:center;
+font-size:13px;
+opacity:.6;
+} */
+
+.footer{
+    text-align:center;
+    font-size:13px;
+    opacity:.6;
+    padding:10px 0px;
+}
+
+/* responsive */
+
+@media(max-width:900px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+body{
+    height:auto;
+    overflow:auto;
+    display:block;
+}
+
+}
+
+/* BOTÓN REGRESAR - FLOTANTE CENTRADO */
+.btn-back{
+position:fixed;
+top:30px;
+left:40px;
+padding:10px 22px;
+border-radius:30px;
+border:none;
+font-weight:600;
+background:linear-gradient(135deg,#00616b,#004d54);
+color:white;
+cursor:pointer;
+transition:.25s;
+z-index:999;
+}
+
+.btn-back:hover{
+transform:translateY(-2px);
+box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+
+.logo{
+margin-bottom:20px;
+display:flex;
+justify-content:center;
+}
+
+.logo img{
+width:300px;
+height:auto;
+}
+
+/* ============================================
+   OPTIMIZACIÓN PARA DISPOSITIVOS MÓVILES
+   ============================================ */
+
+/* DISPOSITIVOS MÓVILES (hasta 768px) */
+@media(max-width:768px){
+
+
+
+body{
+/* padding:20px 0; */
+height:auto;
+overflow:auto;
+display:block;
+}
+
+.main{
+max-width:100%;
+padding:20px 15px;
+}
+
+.titulo{
+font-size:28px;
+margin-bottom:8px;
+}
+
+.sub_titulo{
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.subtitulo{
+font-size:20px;
+margin-bottom:6px;
+}
+
+.sub{
+font-size:14px;
+margin-bottom:10px;
+}
+
+.logo img{
+width:200px;
+}
+
+.grid{
+grid-template-columns:1fr;
+gap:25px;
+}
+
+.card{
+padding:25px 20px;
+border-radius:16px;
+}
+
+.icon img{
+width:65px;
+margin-bottom:15px;
+}
+
+.card h2{
+font-size:18px;
+margin-bottom:8px;
+}
+
+.card p{
+font-size:13px;
+margin-bottom:20px;
+line-height:1.5;
+}
+
+.btn{
+padding:10px 24px;
+font-size:14px;
+border-radius:25px;
+}
+
+.btn-back{
+top:15px;
+left:15px;
+padding:9px 16px;
+font-size:13px;
+}
+
+.btn-back:hover{
+transform:translateX(-50%) translateY(-2px);
+}
+
+.footer{
+font-size:11px;
+position:static;
+margin-top:10px;
+margin-bottom:10px;
+}
+
+#particles-js{
+position:fixed;
+/* width:100%; */
+height:100dvh;
+}
+
+}
+
+/* DISPOSITIVOS PEQUEÑOS (hasta 480px) */
+@media(max-width:480px){
+
+.logo{
+    margin-bottom:0px;
+}
+.main{
+padding:0px 12px;
+}
+
+.titulo{
+font-size:22px;
+margin-bottom:6px;
+}
+
+.sub{
+font-size:13px;
+margin-bottom:10px;
+}
+
+.logo img{
+width:160px;
+}
+
+.grid{
+gap:20px;
+}
+
+.card{
+padding:20px 16px;
+border-radius:14px;
+}
+
+.icon img{
+width:60px;
+margin-bottom:12px;
+}
+
+.card h2{
+font-size:16px;
+}
+
+.card p{
+font-size:12px;
+margin-bottom:16px;
+}
+
+.btn{
+padding:9px 20px;
+font-size:13px;
+}
+
+.btn-back{
+top:12px;
+left:12px;
+padding:8px 14px;
+font-size:12px;
+}
+
+.btn-back:hover{
+transform:translateX(-50%) translateY(-2px);
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="particles-js"></div>
+
+<div class="main">
+
+<div class="logo">
+    <img src="../imagenes/logo.webp" alt="IECM">
+</div>
+
+<h1 class="titulo">
+    ¿Sabes cuál es tu Unidad Territorial? <br>
+    Encuentra tu Unidad Territorial
+</h1>
+<h1 class="titulo sub_titulo">y tu Mesa Receptora de Votación y Opinión</h1>
+<p class="sub">Sistema de consulta de Unidades Territoriales del Marco Geográfico de Participación Ciudadana</p>
+<h2 class="subtitulo">Busca-T</h2>
+
+<div class="grid">
+
+<div class="card" data-aos="fade-right">
+
+<div class="icon">
+    <img src="../imagenes/ubicacion.png" alt="Ubicación">
+</div>
+
+<h2>¡Ubícate al instante!</h2>
+
+<p>
+Encuentra tu Unidad Territorial utilizando el GPS de tu celular.
+</p>
+
+<a href="ubicacion.php" class="btn">
+Buscar con mi ubicación
+</a>
+
+</div>
+
+
+<div class="card" data-aos="fade-left">
+
+<div class="icon">
+    <img src="../imagenes/calle.png" alt="Calle">
+</div>
+
+<h2>Buscar por calle</h2>
+
+<p>
+Tu calle es la llave: ingrésala y ubica tu Unidad Territorial.
+</p>
+
+<a href="domicilio.php" class="btn">
+Buscar por calle
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BOTÓN FLOTANTE - FUERA DEL MAIN -->
+<button class="btn-back" onclick="cerrarVentana()">
+    ⬅ Regresar
+</button>
+
+<div class="footer">
+Sistema de Consulta Territorial · IECM
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<script>
+
+AOS.init({
+duration:900,
+once:true
+});
+
+tsParticles.load("particles-js",{
+
+particles:{
+
+number:{value:60},
+
+color:{value:"#8A3880"},
+
+shape:{type:"circle"},
+
+opacity:{value:0.3},
+
+size:{value:3},
+
+links:{
+enable:true,
+distance:150,
+color:"#8A3880",
+opacity:0.2
+},
+
+move:{
+enable:true,
+speed:1
+}
+
+},
+
+background:{
+color:"#0d0c1d"
+}
+
+});
+
+function cerrarVentana(){
+
+// si la pestaña fue abierta por el sistema
+if(window.history.length > 1){
+    window.history.back();
+}else{
+
+// si fue abierta directamente
+window.close();
+
+}
+
+}
+
+</script>
+<script>
+fetch("contador.php")
+.then(res => res.json())
+.then(data => {
+    // console.log("Visitas:", data.total);
+});
+</script>
+</body>
+</html>
