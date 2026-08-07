@@ -1181,7 +1181,7 @@ var _marcadorPunto = null;  // para el marcador del punto en el mapa
 
 const API_PROXY_URL = '/api-proxy.php';              // Desarrollo/Producción
 // const API_PROXY_URL = '/dev_caracteristicas_UnidadesTerritoriales/api-proxy_local.php'; // Local
-var TABLE    = 'uts_mgpc';      // ajusta si tu tabla tiene otro nombre en la API
+var TABLE    = 'secciones';      // ajusta si tu tabla tiene otro nombre en la API
 var TABLE_MESAS = 'mesas_2396';// tabla para datos de mesas 
 var MOSTRAR_MESAS = false;   // ← cambiar a true para reactivar mesas
 var UTS_EXCEPCION_MESAS = ['15-034', '15-027']; // estas UTs muestran mesas aunque MOSTRAR_MESAS sea false
@@ -2267,7 +2267,7 @@ function cargarMesas(map, claveUT, userLat, userLon) {
 
 function registrarMetrica(id, campo) {
     // console.log('[registrarMetrica INICIO]', id, campo); // <-- agrega esto
-    var urlGet = API_PROXY_URL + '?endpoint=' + encodeURIComponent('feature/uts_mgpc/' + id);
+    var urlGet = API_PROXY_URL + '?endpoint=' + encodeURIComponent('feature/TABLE/' + id);
 
     fetch(urlGet)
         .then(function(r){ return r.json(); })
@@ -2280,7 +2280,7 @@ function registrarMetrica(id, campo) {
             if (campo === 'busquedas_domicilio')  body.properties['ultima_busqueda_domicilio']  = new Date().toISOString().slice(0,19).replace('T',' ');
             if (campo === 'total_mesas_mostradas') {} // sin timestamp
 
-            var urlPatch = API_PROXY_URL + '?endpoint=' + encodeURIComponent('patch/uts_mgpc/' + id) + '&modo=escritura';
+            var urlPatch = API_PROXY_URL + '?endpoint=' + encodeURIComponent('patch/TABLE/' + id) + '&modo=escritura';
             return fetch(urlPatch, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
         })
         .catch(function(){});
