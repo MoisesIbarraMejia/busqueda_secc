@@ -31,6 +31,47 @@
     --radio-lg:      16px;
     --transicion:    .22s ease;
 }
+
+body::before,
+body::after{
+content:'';
+position:fixed;
+border-radius:50%;
+filter:blur(90px);
+z-index:-1;
+pointer-events:none;
+}
+
+body::before{
+width:480px;
+height:480px;
+background:var(--morado);
+opacity:.14;
+top:-160px;
+left:-140px;
+animation:float1 14s ease-in-out infinite;
+}
+
+body::after{
+width:520px;
+height:520px;
+background:var(--verde);
+opacity:.10;
+bottom:-200px;
+right:-160px;
+animation:float2 16s ease-in-out infinite;
+}
+
+@keyframes float1{
+0%,100%{ transform:translate(0,0); }
+50%{ transform:translate(40px,30px); }
+}
+
+@keyframes float2{
+0%,100%{ transform:translate(0,0); }
+50%{ transform:translate(-30px,-40px); }
+}
+
 html, body {
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
     font-size: 15px;
@@ -42,25 +83,33 @@ html, body {
 
 /* ── Header ──────────────────────────────────────────── */
 .header {
-    background: linear-gradient(135deg, #32215C 0%, var(--morado) 60%, #6b2a63 100%);
-    color: #fff;
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    box-shadow: var(--sombra-lg);
-    position: relative;
+background: var(--blanco);
+color: var(--texto);
+padding: 20px 20px;
+display: flex;
+align-items: center;
+gap: 16px;
+border-bottom: 1px solid var(--borde);
+position: relative;
+z-index: 1;
 }
 .header-icon {
-    width: 48px; height: 48px;
-    background: rgba(255,255,255,.18);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
+width: 48px; height: 48px;
+background: linear-gradient(135deg, rgba(138,56,128,.10), rgba(0,97,107,.10));
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 22px;
+flex-shrink: 0;
 }
-.header-text h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; }
-.header-text p  { font-size: .82rem; opacity: .8; margin-top: 2px; }
+.header-text h1 {
+font-size: 1.25rem;
+font-weight: 700;
+letter-spacing: -.01em;
+background: linear-gradient(120deg, var(--morado-oscuro), var(--morado));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.header-text p { font-size: .82rem; color: var(--texto-suave); margin-top: 2px; }
 
 /* ── Main container ──────────────────────────────────── */
 .container {
@@ -256,15 +305,15 @@ html, body {
 
 .btn-home{
 position:fixed;
-top:20px;
-right:20px;
-padding:10px 20px;
+top:24px;
+right:24px;
+padding:10px 22px;
 border-radius:30px;
-background:linear-gradient(135deg,#8A3880,#6b2a63);
+background:linear-gradient(135deg, #6b004b, #3d0054);
 color:white;
 font-weight:600;
 text-decoration:none;
-box-shadow:0 6px 20px rgba(0,0,0,.25);
+box-shadow:0 6px 20px rgba(0,0,0,.2);
 transition:.25s;
 z-index:9999;
 }
@@ -275,17 +324,10 @@ box-shadow:0 10px 30px rgba(0,0,0,.35);
 }
 
 .header-logo img {
-    width: 85px;
-    height: auto;
-    object-fit: contain;
-
-    /* Glow blanco limpio */
-    /* filter:
-        drop-shadow(0 0 4px rgba(255,255,255,0.9))
-        drop-shadow(0 0 10px rgba(255,255,255,0.6))
-        drop-shadow(0 0 18px rgba(255,255,255,0.4));
-
-    transition: filter 0.3s ease, transform 0.3s ease; */
+width: 85px;
+height: auto;
+object-fit: contain;
+filter: brightness(0) saturate(100%) invert(20%) sepia(45%) saturate(1200%) hue-rotate(270deg);
 }
 
 /* Hover sutil */
@@ -969,7 +1011,7 @@ max-width:320px;
 
     <div class="header-center">
         <div class="header-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="#dccde6" xmlns="http://www.w3.org/2000/svg">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#8A3880" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5
                          c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5
                          s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
@@ -992,7 +1034,7 @@ max-width:320px;
 
             <div class="instruccion">
                 <span class="instruccion-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#dccde6" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="#8A3880" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5
                                 c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5
                                 s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
@@ -1000,7 +1042,7 @@ max-width:320px;
                 </span>
                 <div>
                     Presiona el botón para que el navegador detecte tu ubicación actual. El sistema encontrará automáticamente la 
-                    <strong>Unidad Territorial</strong> a la que perteneces y mostrará su polígono en el mapa.
+                    <strong>Seccion Electoral</strong> a la que perteneces y mostrará su polígono en el mapa.
                     
                     <p class="nota-geolocalizacion">
                         Nota: Si abriste este enlace desde Facebook o Instagram, es posible que la geolocalización no funcione. 
@@ -1024,7 +1066,7 @@ max-width:320px;
     <div id="resultado_wrap" style="display:none;">
         <div class="resultado-card">
             <div class="resultado-header">
-                <span></span> Unidad Territorial encontrada
+                <span></span> Seccion Electoral encontrada
             </div>
             <div class="table-wrap">
                 <div id="tabla_ubicacion"></div>
@@ -1038,7 +1080,7 @@ max-width:320px;
             <span>💡</span> ¿En qué Mesa Receptora de Votación y Opinión puedo participar?
         </div>
         <div class="nota-mesas-texto">
-            Al <strong>Confirmar tu Ubicación y ver MRVyO</strong>, el mapa mostrará las mesas que corresponden a tu Unidad Territorial. Toca cualquier <strong>marcador</strong> para ver las secciones electorales que atiende esa mesa. La que incluya tu sección electoral —indicada en el frente de tu Credencial para Votar— es a la que debes acudir a participar.
+            Al <strong>Confirmar tu Ubicación y ver MRVyO</strong>, el mapa mostrará las mesas que corresponden a tu Seccion Electoral. Toca cualquier <strong>marcador</strong> para ver las secciones electorales que atiende esa mesa. La que incluya tu sección electoral —indicada en el frente de tu Credencial para Votar— es a la que debes acudir a participar.
         </div>
     </div>
 
@@ -1185,7 +1227,7 @@ function renderTabla(feature) {
     var resultadoDiv = document.getElementById('resultado_wrap');
     resultadoDiv.innerHTML = 
         '<div class="resultado-card">' +
-        '<div class="resultado-header"><span></span> Unidad Territorial</div>' +
+        '<div class="resultado-header"><span></span> Seccion Electoral</div>' +
         '<div class="table-wrap">' + tablaHTML + '</div>' +
         '</div>';
     
@@ -1209,7 +1251,7 @@ function mostrarListaUTs(features, initialLat, initialLon) {
     
     document.getElementById('resultado_wrap').innerHTML = 
         '<div class="resultado-card">' +
-        '<div class="resultado-header"><span></span> Selecciona una Unidad Territorial</div>' +
+        '<div class="resultado-header"><span></span> Selecciona una Seccion Electoral</div>' +
         html +
         '</div>';
     
@@ -1485,7 +1527,7 @@ function pintarMapa(feature, mapId, wrapId, userLat, userLon) {
         '<tr><td>Demarcación</td><td>'        + (p.dem_territ ||'—') + '</td></tr>' +
         '<tr><td>Distrito Local</td><td>'     + (p.dtto_loc   ||'—') + '</td></tr>' +
         '<tr><td>Cve. UT</td><td>'            + (p.cve_ut     ||'—') + '</td></tr>' +
-        '<tr><td>Unidad Territorial</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
+        '<tr><td>Seccion Electoral</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
         '<tr><td>Secciones Completas</td><td>'          + (p.secciones  ||'—') + '</td></tr>' +
         '<tr><td>Secciones Parciales</td><td>'     + (p.secciones1 ||'—') + '</td></tr>' +
         '<tr><td>Tipo UT</td><td>'            + (p.tipo_ut    ||'—') + '</td></tr>' +
@@ -1672,7 +1714,7 @@ function confirmarUbicacion(lat, lon) {
                     '<tr><td>Demarcación</td><td>'        + (p.dem_territ ||'—') + '</td></tr>' +
                     '<tr><td>Distrito Local</td><td>'     + (p.dtto_loc   ||'—') + '</td></tr>' +
                     '<tr><td>Cve. UT</td><td>'            + (p.cve_ut     ||'—') + '</td></tr>' +
-                    '<tr><td>Unidad Territorial</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
+                    '<tr><td>Seccion Electoral</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
                     '<tr><td>Secciones Completas</td><td>'          + (p.secciones  ||'—') + '</td></tr>' +
                     '<tr><td>Secciones Parciales</td><td>'     + (p.secciones1 ||'—') + '</td></tr>' +
                     '<tr><td>Tipo UT</td><td>'            + (p.tipo_ut    ||'—') + '</td></tr>' +

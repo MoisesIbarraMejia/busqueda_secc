@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw42oKA6idOiNV51RXLHzRwYwn7MerDBI" async defer></script>
-<script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 <style>
 /* ── Reset & Base ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,22 +37,50 @@ html, body {
     color: var(--texto);
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
 }
+
+body::before,
+body::after{
+    content:'';
+    position:fixed;
+    border-radius:50%;
+    filter:blur(90px);
+    z-index:-1;
+    pointer-events:none;
+}
+body::before{
+    width:480px; height:480px;
+    background:var(--morado);
+    opacity:.14;
+    top:-160px; left:-140px;
+    animation:float1 14s ease-in-out infinite;
+}
+body::after{
+    width:520px; height:520px;
+    background:var(--verde);
+    opacity:.10;
+    bottom:-200px; right:-160px;
+    animation:float2 16s ease-in-out infinite;
+}
+@keyframes float1{ 0%,100%{transform:translate(0,0);} 50%{transform:translate(40px,30px);} }
+@keyframes float2{ 0%,100%{transform:translate(0,0);} 50%{transform:translate(-30px,-40px);} }
 
 /* ── Header ──────────────────────────────────────────── */
 .header {
-    background: linear-gradient(135deg, #32215C 0%, var(--morado) 60%, #6b2a63 100%);
-    color: #fff;
-    padding: 15px 20px;
+    background: var(--blanco);
+    color: var(--texto);
+    padding: 20px 20px;
     display: flex;
     align-items: center;
     gap: 16px;
-    box-shadow: var(--sombra-lg);
+    border-bottom: 1px solid var(--borde);
     position: relative;
+    z-index: 1;
 }
 .header-icon {
     width: 48px; height: 48px;
-    background: rgba(255,255,255,.18);
+    background: linear-gradient(135deg, rgba(138,56,128,.10), rgba(0,97,107,.10));
     border-radius: 50%;
     display: flex; 
     align-items: center; 
@@ -61,8 +88,13 @@ html, body {
     font-size: 22px;
     flex-shrink: 0;
 }
-.header-text h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; }
-.header-text p  { font-size: .82rem; opacity: .8; margin-top: 2px; }
+.header-text h1 {
+    font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em;
+    background: linear-gradient(120deg, var(--morado-oscuro), var(--morado));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.header-text p  { font-size: .82rem; color: var(--texto-suave); margin-top: 2px; }
 
 /* ── Barra de progreso de pasos ──────────────────────── */
 .steps-bar {
@@ -315,36 +347,29 @@ html, body {
 
 .btn-home{
 position:fixed;
-top:20px;
-right:20px;
-padding:10px 20px;
+top:24px;
+right:24px;
+padding:10px 22px;
 border-radius:30px;
-background:linear-gradient(135deg,#8A3880,#6b2a63);
+background:linear-gradient(135deg, #6b004b, #3d0054);
 color:white;
 font-weight:600;
 text-decoration:none;
-box-shadow:0 6px 20px rgba(0,0,0,.25);
+box-shadow:0 6px 20px rgba(0,0,0,.2);
 transition:.25s;
 z-index:9999;
 }
 
 .btn-home:hover{
 transform:translateY(-2px);
-box-shadow:0 10px 30px rgba(0,0,0,.35);
+box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
 
 .header-logo img {
     width: 85px;
     height: auto;
     object-fit: contain;
-
-    /* Glow blanco limpio */
-    /* filter:
-        drop-shadow(0 0 4px rgba(255,255,255,0.9))
-        drop-shadow(0 0 10px rgba(255,255,255,0.6))
-        drop-shadow(0 0 18px rgba(255,255,255,0.4));
-
-    transition: filter 0.3s ease, transform 0.3s ease; */
+    filter: brightness(0) saturate(100%) invert(20%) sepia(45%) saturate(1200%) hue-rotate(270deg);
 }
 
 /* Hover sutil */
@@ -1074,7 +1099,7 @@ justify-content:center;
     <!-- Icono SVG -->
     <div class="header-center">
         <div class="header-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="#dccde6" xmlns="http://www.w3.org/2000/svg">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#8A3880" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5
                         c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5
                         s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/>
@@ -1093,7 +1118,7 @@ justify-content:center;
 <div class="steps-bar">
     <div class="step active" id="step1"><div class="step-num">1</div> Calle</div>
     <div class="step-sep">›</div>
-    <div class="step" id="step3"><div class="step-num">2</div> Unidad Territorial</div>
+    <div class="step" id="step3"><div class="step-num">2</div> Seccion Electoral</div>
     <div class="step-sep">›</div>
     <div class="step" id="step4"><div class="step-num">3</div> Resultado</div>
 </div>
@@ -1122,17 +1147,17 @@ justify-content:center;
         </div>
     </div>
 
-    <!-- Paso 2 — Unidad Territorial -->
+    <!-- Paso 2 — Sección Electoral -->
     <div class="card bloque-paso" id="card_paso2" style="display:none;">
-        <div class="card-header"><span></span> Paso 2 — Unidad Territorial</div>
+        <div class="card-header"><span></span> Paso 2 — Sección Electoral</div>
         <div class="card-body">
-            <div class="paso-label">Selecciona la unidad territorial</div>
+            <div class="paso-label">Selecciona la sección electoral</div>
             <p style="font-size:.83rem; color:var(--texto-suave); margin-bottom:12px;">
                 La búsqueda realizada arrojó el siguiente resultado:
                 <strong id="calle_seleccionada_label"></strong>
             </p>
             <select id="sel_ut" class="select-field" onchange="domBuscarUTs(this.value)">
-                <option value="" disabled selected>Seleccionar Unidad Territorial...</option>
+                <option value="" disabled selected>Seleccionar Sección Electoral...</option>
             </select>
         </div>
     </div>
@@ -1140,7 +1165,7 @@ justify-content:center;
     <!-- PASO 4: Resultado -->
     <div id="resultado_wrap" style="display:none;">
         <div class="resultado-card">
-            <div class="resultado-header"><span></span> Información de la Unidad Territorial</div>
+            <div class="resultado-header"><span></span> Información de la Sección Electoral</div>
             <div class="table-wrap">
                 <div id="tabla_domicilio"></div>
             </div>
@@ -1153,7 +1178,7 @@ justify-content:center;
             <span>💡</span> ¿En qué Mesa Receptora de Votación y Opinión puedo participar?
         </div>
         <div class="nota-mesas-texto">
-            Al <strong>Confirmar tu Ubicación y ver MRVyO</strong>, el mapa mostrará las mesas que corresponden a tu Unidad Territorial. Toca cualquier <strong>marcador</strong> para ver las secciones electorales que atiende esa mesa. La que incluya tu sección electoral —indicada en el frente de tu Credencial para Votar— es a la que debes acudir a participar.
+            Al <strong>Confirmar tu Ubicación y ver MRVyO</strong>, el mapa mostrará las mesas que corresponden a tu Sección Electoral. Toca cualquier <strong>marcador</strong> para ver las secciones electorales que atiende esa mesa. La que incluya tu sección electoral —indicada en el frente de tu Credencial para Votar— es a la que debes acudir a participar.
         </div>
     </div>
 
@@ -1181,14 +1206,7 @@ var _marcadorPunto = null;  // para el marcador del punto en el mapa
 
 const API_PROXY_URL = '/api-proxy.php';              // Desarrollo/Producción
 // const API_PROXY_URL = '/dev_caracteristicas_UnidadesTerritoriales/api-proxy_local.php'; // Local
-var TABLE    = 'secciones';      // ajusta si tu tabla tiene otro nombre en la API
-var TABLE_MESAS = 'mesas_2396';// tabla para datos de mesas 
-var MOSTRAR_MESAS = false;   // ← cambiar a true para reactivar mesas
-var UTS_EXCEPCION_MESAS = ['15-034', '15-027']; // estas UTs muestran mesas aunque MOSTRAR_MESAS sea false
-
-function mesasHabilitadas(claveUT) {
-    return MOSTRAR_MESAS || UTS_EXCEPCION_MESAS.indexOf(claveUT) !== -1;
-}
+var TABLE = 'secciones';      // capa de la API
 
 /* ── Estado ──────────────────────────────────────────── */
 var _calleActual = '';
@@ -1477,19 +1495,19 @@ function mostrarListadoUTs(features) {
 
     // Reutiliza el card_paso2 para mostrar el listado
     var sel = document.getElementById('sel_ut');
-    sel.innerHTML = '<option value="" disabled selected>Seleccionar Unidad Territorial...</option>';
+    sel.innerHTML = '<option value="" disabled selected>Seleccionar Sección Electoral...</option>';
 
     features.forEach(function(f, i) {
         var p = f.properties || {};
         var opt = document.createElement('option');
         opt.value = i;  // usamos el índice para recuperar el feature completo
-        opt.textContent = (p.nombre || '—') + ' [' + (p.cve_ut || '—') + '] — ' + (p.dem_territ || '—');
+        opt.textContent = 'Sección ' + (p.seccion || '—') + ' — Distrito Local ' + (p.distrito_l || '—');
         sel.appendChild(opt);
     });
 
     // Cambiar el label del paso 1
     document.getElementById('calle_seleccionada_label').textContent = 
-        features.length + ' Unidades Territoriales cercanas a tu ubicación';
+        features.length + ' Secciones Electorales cercanas a tu ubicación';
 
     // Cambiar el onchange del select para manejar el índice
     sel.onchange = function() {
@@ -1599,17 +1617,11 @@ function pintarMapaConPunto(feature, lat, lon, mapId, wrapId) {
     // ── InfoWindow del polígono (CLICK) ──
     var iwContent =
         '<div class="iw-custom">' +
-        '<h4>' + (p.nombre || '—') + '</h4>' +
+        '<h4>Sección ' + (p.seccion || '—') + '</h4>' +
         '<table>' +
-        '<tr><td>Entidad</td><td>'            + (p.entidad    ||'—') + '</td></tr>' +
-        '<tr><td>Cve. Demarcación</td><td>'   + (p.cve_demarc ||'—') + '</td></tr>' +
-        '<tr><td>Demarcación</td><td>'        + (p.dem_territ ||'—') + '</td></tr>' +
-        '<tr><td>Distrito Local</td><td>'     + (p.dtto_loc   ||'—') + '</td></tr>' +
-        '<tr><td>Cve. UT</td><td>'            + (p.cve_ut     ||'—') + '</td></tr>' +
-        '<tr><td>Unidad Territorial</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
-        '<tr><td>Secciones Completas</td><td>'+ (p.secciones  ||'—') + '</td></tr>' +
-        '<tr><td>Secciones Parciales</td><td>'+ (p.secciones1 ||'—') + '</td></tr>' +
-        '<tr><td>Tipo UT</td><td>'            + (p.tipo_ut    ||'—') + '</td></tr>' +
+        '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
+        '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
+        '<tr><td>Sección</td><td>'        + (p.seccion    || '—') + '</td></tr>' +
         '</table></div>';
 
     var infoWindow = new google.maps.InfoWindow({ content: iwContent, disableAutoPan: false });
@@ -1637,10 +1649,9 @@ function pintarMapaConPunto(feature, lat, lon, mapId, wrapId) {
         });
         if (isTouchDevice) return;
         hoverPanel.innerHTML =
-            '<strong>' + (p.nombre || '—') + '</strong>' +
-            'Clave: ' + (p.cve_ut || '—') + '<br>' +
-            'Demarcación: ' + (p.dem_territ || '—') + '<br>' +
-            'Tipo: ' + (p.tipo_ut || '—');
+            '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+            'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
+            'Municipio: '      + (p.municipio  || '—');
         hoverPanel.style.display = 'block';
     });
     mapaUT.data.addListener('mousemove', function(event) {
@@ -1703,7 +1714,7 @@ function resetDesde(paso) {
 
         var sel = document.getElementById('sel_ut'); 
         if (sel) {
-            sel.innerHTML = '<option value="" disabled selected>Seleccionar Unidad Territorial...</option>';
+            sel.innerHTML = '<option value="" disabled selected>Seleccionar Sección Electoral...</option>';
         }
     }
 
@@ -1719,13 +1730,9 @@ function resetDesde(paso) {
 function renderTabla(feature) {
     var p = feature.properties || {};
     var campos = [
-        ['Clave UT',      p.cve_ut     || '—'],
-        ['Nombre',        p.nombre     || '—'],
-        ['Demarcación',   p.dem_territ || '—'],
-        ['Distrito Local',p.dtto_loc   || '—'],
-        ['Secciones Completas',     p.secciones  || '—'],
-        ['Secciones Parciales',p.secciones1 || '—'],
-        ['Tipo UT',       p.tipo_ut    || '—'],
+        ['Distrito Local', p.distrito_l || '—'],
+        ['Municipio',      p.municipio  || '—'],
+        ['Sección',        p.seccion    || '—'],
     ];
 
     document.getElementById('tabla_domicilio').innerHTML =
@@ -1778,17 +1785,11 @@ function pintarMapa(feature, mapId, wrapId) {
     // ── InfoWindow (CLICK sobre el polígono) ──
     var iwContent =
         '<div class="iw-custom">' +
-        '<h4>' + (p.nombre || '—') + '</h4>' +
+        '<h4>Sección ' + (p.seccion || '—') + '</h4>' +
         '<table>' +
-        '<tr><td>Entidad</td><td>'            + (p.entidad    ||'—') + '</td></tr>' +
-        '<tr><td>Cve. Demarcación</td><td>'   + (p.cve_demarc ||'—') + '</td></tr>' +
-        '<tr><td>Demarcación</td><td>'        + (p.dem_territ ||'—') + '</td></tr>' +
-        '<tr><td>Distrito Local</td><td>'     + (p.dtto_loc   ||'—') + '</td></tr>' +
-        '<tr><td>Cve. UT</td><td>'            + (p.cve_ut     ||'—') + '</td></tr>' +
-        '<tr><td>Unidad Territorial</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
-        '<tr><td>Secciones Completas</td><td>'          + (p.secciones  ||'—') + '</td></tr>' +
-        '<tr><td>Secciones Parciales</td><td>'     + (p.secciones1 ||'—') + '</td></tr>' +
-        '<tr><td>Tipo UT</td><td>'            + (p.tipo_ut    ||'—') + '</td></tr>' +
+        '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
+        '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
+        '<tr><td>Sección</td><td>'        + (p.seccion    || '—') + '</td></tr>' +
         '</table></div>';
 
     var infoWindow = new google.maps.InfoWindow({ content: iwContent, disableAutoPan: false });
@@ -1816,10 +1817,9 @@ function pintarMapa(feature, mapId, wrapId) {
         });
         if (isTouchDevice) return;
         hoverPanel.innerHTML =
-            '<strong>' + (p.nombre || '—') + '</strong>' +
-            'Clave: ' + (p.cve_ut    || '—') + '<br>' +
-            'Demarcación: '  + (p.dem_territ || '—') + '<br>' +
-            'Tipo: '  + (p.tipo_ut    || '—');
+            '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+            'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
+            'Municipio: '      + (p.municipio  || '—');
         hoverPanel.style.display = 'block';
     });
 
@@ -1871,38 +1871,19 @@ function confirmarUbicacion(lat, lon) {
                 return;
             }
             if (!resp.features || resp.features.length === 0) {
-                setMapaStatus('error', 'Esta ubicación no pertenece a ninguna UT.');
+                setMapaStatus('error', 'Esta ubicación no pertenece a ninguna sección electoral.');
                 mostrarModalFuera();
                 fetch("contador.php?tipo=fuera").catch(function(){});
                 return;
             }
 
             var feature = resp.features[0];
-            var claveUT = (feature.properties || {}).cve_ut || '';
             window._utIdActual = feature.id;
             registrarMetrica(feature.id, 'busquedas_domicilio');
 
-
-            // renderTabla(feature);
-            // if (MOSTRAR_MESAS) {
-            //     document.getElementById('nota_mesas').classList.add('visible');
-            // }
-            if (mesasHabilitadas(claveUT)) {
-                document.getElementById('nota_mesas').classList.add('visible');
-            } else {
-                document.getElementById('nota_mesas').classList.remove('visible');
-            }
             setMapaStatus('ok', '✓ Ubicación confirmada.');
 
             var mapDiv = document.getElementById('map_domicilio');
-
-            // Limpieza de features mesas
-            _mesaMarkers.forEach(function(m) { m.map = null; });
-            _mesaMarkers = [];
-            if (window._mesaClusterer) {
-                window._mesaClusterer.clearMarkers();
-                window._mesaClusterer = null;
-            }
 
             if (mapDiv && mapDiv.__gmap) {
 
@@ -1933,16 +1914,10 @@ function confirmarUbicacion(lat, lon) {
                 // 4. InfoWindow del polígono
                 var p = feature.properties || {};
                 var iwContent =
-                    '<div class="iw-custom"><h4>' + (p.nombre || '—') + '</h4><table>' +
-                    '<tr><td>Entidad</td><td>'             + (p.entidad    || '—') + '</td></tr>' +
-                    '<tr><td>Cve. Demarcación</td><td>'    + (p.cve_demarc || '—') + '</td></tr>' +
-                    '<tr><td>Demarcación</td><td>'         + (p.dem_territ || '—') + '</td></tr>' +
-                    '<tr><td>Distrito Local</td><td>'      + (p.dtto_loc   || '—') + '</td></tr>' +
-                    '<tr><td>Cve. UT</td><td>'             + (p.cve_ut     || '—') + '</td></tr>' +
-                    '<tr><td>Unidad Territorial</td><td>'  + (p.nombre     || '—') + '</td></tr>' +
-                    '<tr><td>Secciones Completas</td><td>' + (p.secciones  || '—') + '</td></tr>' +
-                    '<tr><td>Secciones Parciales</td><td>' + (p.secciones1 || '—') + '</td></tr>' +
-                    '<tr><td>Tipo UT</td><td>'             + (p.tipo_ut    || '—') + '</td></tr>' +
+                    '<div class="iw-custom"><h4>Sección ' + (p.seccion || '—') + '</h4><table>' +
+                    '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
+                    '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
+                    '<tr><td>Sección</td><td>'        + (p.seccion    || '—') + '</td></tr>' +
                     '</table></div>';
 
                 var newInfoWindow = new google.maps.InfoWindow({ content: iwContent, disableAutoPan: false });
@@ -1959,10 +1934,9 @@ function confirmarUbicacion(lat, lon) {
                     map.data.overrideStyle(event.feature, { strokeColor: '#32215C', strokeWeight: 4, fillOpacity: 0.1 });
                     if (isTouchDevice) return;
                     hoverPanel.innerHTML =
-                        '<strong>' + (p.nombre || '—') + '</strong>' +
-                        'Clave: ' + (p.cve_ut || '—') + '<br>' +
-                        'Demarcación: ' + (p.dem_territ || '—') + '<br>' +
-                        'Tipo: ' + (p.tipo_ut || '—');
+                        '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+                        'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
+                        'Municipio: '      + (p.municipio  || '—');
                     hoverPanel.style.display = 'block';
                 });
                 map.data.addListener('mousemove', function(event) {
@@ -1977,14 +1951,6 @@ function confirmarUbicacion(lat, lon) {
                 });
 
                 setTimeout(function() { newInfoWindow.open(map); }, 300);
-
-                // 5. Cargar mesas de la UT
-                // if (MOSTRAR_MESAS && claveUT) {
-                //     cargarMesas(map, claveUT, lat, lon);
-                // }
-                if (claveUT && mesasHabilitadas(claveUT)) {
-                    cargarMesas(map, claveUT, lat, lon);
-                }
             }
 
         } catch(e) {
