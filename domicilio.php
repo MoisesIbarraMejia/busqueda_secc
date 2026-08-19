@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" href="logoiecm.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw42oKA6idOiNV51RXLHzRwYwn7MerDBI" async defer></script>
 <style>
 /* ── Reset & Base ─────────────────────────────────────── */
@@ -17,8 +18,8 @@
     --morado-oscuro: #6b2a63;
     --morado-claro:  #f5eef8;
     --morado-mid:    #d1bfdb;
-    --verde:         #00616b;
-    --verde-claro:   #e6f4f5;
+    --verde:         #e0be9e;
+    --verde-claro:   #f7ece1; 
     --texto:         #2c3345;
     --texto-suave:   #5a6478;
     --borde:         #dde1ea;
@@ -80,7 +81,7 @@ body::after{
 }
 .header-icon {
     width: 48px; height: 48px;
-    background: linear-gradient(135deg, rgba(138,56,128,.10), rgba(0,97,107,.10));
+    background: var(--verde-claro);
     border-radius: 50%;
     display: flex; 
     align-items: center; 
@@ -269,7 +270,7 @@ body::after{
     animation: fadeSlide .4s ease;
 }
 .resultado-header {
-    background: linear-gradient(90deg, #32215C, var(--morado));
+    background: var(--morado-oscuro);
     color: #fff;
     padding: 14px 22px;
     display: flex; align-items: center; gap: 10px;
@@ -279,7 +280,8 @@ body::after{
 #tabladem {
     width: 100%;
     border-collapse: collapse;
-    font-size: .82rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: .95rem;
 }
 #tabladem thead th {
     background: #2c3345;
@@ -289,17 +291,18 @@ body::after{
     font-size: .78rem;
     letter-spacing: .04em;
     text-transform: uppercase;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
 }
 #tabladem tbody td {
-    padding: 10px 14px;
+    padding: 12px 14px;
     border-bottom: 1px solid var(--borde);
-    color: var(--texto);
+    color: #3d3226;        /* color fijo, ya no depende de var(--texto) */
+    text-align: center;
 }
 #tabladem tbody tr:last-child td { border-bottom: none; }
 #tabladem tbody tr:hover { background: var(--morado-claro); transition: background .15s; }
-#tabladem tbody td:first-child { font-family: 'Courier New', monospace; font-weight: 700; color: var(--morado); }
+#tabladem tbody td:first-child { font-family: 'Poppins', sans-serif; font-weight: 700; color: #6b4a2f; } /* color fijo, ya no var(--morado) */
 
 /* ── Mapa ─────────────────────────────────────────────── */
 .mapa-wrap {
@@ -800,7 +803,7 @@ justify-content:center;
 }
 .status-info  { background: #eef4ff; color: #2563eb; border: 1px solid #bfdbfe; }
 .status-error { background: #fff1f1; color: #c0392b; border: 1px solid #fecaca; }
-.status-ok    { background: var(--verde-claro); color: var(--verde); border: 1px solid #a7d7db; }
+.status-ok    { background: var(--verde-claro);  border: 1px solid var(--verde); }
 @keyframes fadeSlide { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
 /* ── Marcador de Mesa ─────────────────────────────── */
@@ -1071,10 +1074,10 @@ justify-content:center;
         <h2>Ubicación fuera de cobertura</h2>
         <p>
             Tu ubicación no pertenece a los límites del actual Marco Geográfico 
-            de Participación Ciudadana.
+            Electoral.
         </p>
 
-        <a href="https://scmgpc.iecm.mx/#" target="_blank" class="modal-link">
+        <a href="https://www.iecm.mx/www/scmgel/" target="_blank" class="modal-link">
             Consultar más información
         </a>
 
@@ -1109,7 +1112,7 @@ justify-content:center;
         <!-- Texto -->
         <div class="header-text">
             <h1>Búsqueda por Calle</h1>
-            <p>Sistema de Consulta del Marco Geográfico de Participación Ciudadana de la Ciudad de México</p>
+            <p>Sistema de Consulta del Marco Geográfico Electoral de la Ciudad de México</p>
         </div>
     </div>
 </div>
@@ -1190,7 +1193,7 @@ justify-content:center;
 </div>
 
 <div class="footer">
-    Instituto Electoral de la Ciudad de México &nbsp;·&nbsp; Sistema de Consulta del Marco Geográfico de Participación Ciudadana de la Ciudad de México
+    Instituto Electoral de la Ciudad de México &nbsp;·&nbsp; Sistema de Consulta del Marco Geográfico Electoral de la Ciudad de México
 </div>
 
 <script>
@@ -1457,10 +1460,9 @@ async function initBusqueda() {
         resetDesde(2);
         setStep(2);
 
-        apiGet('contains/' + TABLE, { lat: _latActual, lon: _lonActual, buffer: 50 }, function(status, text) {
+        apiGet('contains/' + TABLE, { lat: _latActual, lon: _lonActual }, function(status, text) {
             try {
                 var resp = JSON.parse(text);
-                // console.log('STATUS:', status, 'RESP:', resp);
 
                 if (!resp.features || resp.features.length === 0) {
                     mostrarModalFuera();
@@ -1468,21 +1470,15 @@ async function initBusqueda() {
                     return;
                 }
 
-                // Una sola UT → ir directo al resultado
-                if (resp.features.length === 1) {
-                    setStep(4);
-                    renderTabla(resp.features[0]);
-                    window._utIdActual = resp.features[0].id; // solo setea, no registres aquí
-                    registrarMetrica(window._utIdActual, 'busquedas_domicilio');
-                    pintarMapaConPunto(resp.features[0], _latActual, _lonActual, 'map_domicilio', 'mapa_wrap');
-                    return;
-                }
-
-                // Varias UTs → mostrar listado
-                mostrarListadoUTs(resp.features);
+                // Ir directo al resultado con la primera sección encontrada;
+                // el usuario ajusta con el marcador arrastrable en el mapa.
+                setStep(4);
+                renderTabla(resp.features[0]);
+                window._utIdActual = resp.features[0].id;
+                registrarMetrica(window._utIdActual, 'busquedas_domicilio');
+                pintarMapaConPunto(resp.features[0], _latActual, _lonActual, 'map_domicilio', 'mapa_wrap');
 
             } catch(e) {
-                // console.log('ERROR:', e.message, text);
                 alert('Error al procesar la respuesta del servidor.');
             }
         });
@@ -1619,9 +1615,9 @@ function pintarMapaConPunto(feature, lat, lon, mapId, wrapId) {
         '<div class="iw-custom">' +
         '<h4>Sección ' + (p.seccion || '—') + '</h4>' +
         '<table>' +
+        '<tr><td>Demarcación</td><td>'        + (p.nombre    || '—') + '</td></tr>' +
         '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
         '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
-        '<tr><td>Sección</td><td>'        + (p.seccion    || '—') + '</td></tr>' +
         '</table></div>';
 
     var infoWindow = new google.maps.InfoWindow({ content: iwContent, disableAutoPan: false });
@@ -1650,6 +1646,7 @@ function pintarMapaConPunto(feature, lat, lon, mapId, wrapId) {
         if (isTouchDevice) return;
         hoverPanel.innerHTML =
             '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+            'Demarcación: ' + (p.nombre || '—') + '<br>' +
             'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
             'Municipio: '      + (p.municipio  || '—');
         hoverPanel.style.display = 'block';
@@ -1730,9 +1727,10 @@ function resetDesde(paso) {
 function renderTabla(feature) {
     var p = feature.properties || {};
     var campos = [
+        ['Sección',        p.seccion    || '—'],
+        ['Demarcación',    p.nombre     || '—'],
         ['Distrito Local', p.distrito_l || '—'],
         ['Municipio',      p.municipio  || '—'],
-        ['Sección',        p.seccion    || '—'],
     ];
 
     document.getElementById('tabla_domicilio').innerHTML =
@@ -1787,9 +1785,9 @@ function pintarMapa(feature, mapId, wrapId) {
         '<div class="iw-custom">' +
         '<h4>Sección ' + (p.seccion || '—') + '</h4>' +
         '<table>' +
+        '<tr><td>Demarcación</td><td>' + (p.nombre || '—') + '</td></tr>' +
         '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
         '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
-        '<tr><td>Sección</td><td>'        + (p.seccion    || '—') + '</td></tr>' +
         '</table></div>';
 
     var infoWindow = new google.maps.InfoWindow({ content: iwContent, disableAutoPan: false });
@@ -1818,6 +1816,7 @@ function pintarMapa(feature, mapId, wrapId) {
         if (isTouchDevice) return;
         hoverPanel.innerHTML =
             '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+            'Demarcación: ' + (p.nombre || '—') + '<br>' +
             'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
             'Municipio: '      + (p.municipio  || '—');
         hoverPanel.style.display = 'block';
@@ -1859,7 +1858,7 @@ function confirmarUbicacion(lat, lon) {
             var resp = JSON.parse(responseText);
 
             if (status !== 200) {
-                setMapaStatus('error', 'Error del servidor: ' + status);
+                setMapaStatus('error', 'Error ubicacion fuera de cobertura');
                 mostrarModalFuera();
                 fetch("contador.php?tipo=fuera").catch(function(){});
                 return;
@@ -1882,6 +1881,8 @@ function confirmarUbicacion(lat, lon) {
             registrarMetrica(feature.id, 'busquedas_domicilio');
 
             setMapaStatus('ok', '✓ Ubicación confirmada.');
+
+            renderTabla(feature);
 
             var mapDiv = document.getElementById('map_domicilio');
 
@@ -1915,9 +1916,9 @@ function confirmarUbicacion(lat, lon) {
                 var p = feature.properties || {};
                 var iwContent =
                     '<div class="iw-custom"><h4>Sección ' + (p.seccion || '—') + '</h4><table>' +
+                    '<tr><td>Demarcación</td><td>' + (p.nombre || '—') + '</td></tr>' +
                     '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
                     '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
-                    '<tr><td>Sección</td><td>'        + (p.seccion    || '—') + '</td></tr>' +
                     '</table></div>';
 
                 var newInfoWindow = new google.maps.InfoWindow({ content: iwContent, disableAutoPan: false });
@@ -1935,6 +1936,7 @@ function confirmarUbicacion(lat, lon) {
                     if (isTouchDevice) return;
                     hoverPanel.innerHTML =
                         '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+                        'Demarcación: ' + (p.nombre || '—') + '<br>' +
                         'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
                         'Municipio: '      + (p.municipio  || '—');
                     hoverPanel.style.display = 'block';

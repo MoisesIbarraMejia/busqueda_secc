@@ -8,6 +8,7 @@
 <link rel="apple-touch-icon" href="logoiecm.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCw42oKA6idOiNV51RXLHzRwYwn7MerDBI&libraries=marker"></script>
 <script src="https://unpkg.com/@googlemaps/markerclusterer/dist/index.min.js"></script>
 <style>
@@ -18,8 +19,8 @@
     --morado-oscuro: #6b2a63;
     --morado-claro:  #f5eef8;
     --morado-mid:    #d1bfdb;
-    --verde:         #00616b;
-    --verde-claro:   #e6f4f5;
+    --verde:         #e0be9e;
+    --verde-claro:   #f7ece1;
     --texto:         #2c3345;
     --texto-suave:   #5a6478;
     --borde:         #dde1ea;
@@ -95,7 +96,7 @@ z-index: 1;
 }
 .header-icon {
 width: 48px; height: 48px;
-background: linear-gradient(135deg, rgba(138,56,128,.10), rgba(0,97,107,.10));
+background: var(--verde-claro);
 border-radius: 50%;
 display: flex; align-items: center; justify-content: center;
 font-size: 22px;
@@ -140,7 +141,7 @@ background: linear-gradient(120deg, var(--morado-oscuro), var(--morado));
     padding: 14px 18px;
     margin-bottom: 24px;
     font-size: .88rem;
-    color: var(--verde);
+    /* color: var(--verde); */
     line-height: 1.55;
 }
 .instruccion-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
@@ -198,7 +199,12 @@ background: linear-gradient(120deg, var(--morado-oscuro), var(--morado));
 }
 .status-info  { background: #eef4ff; color: #2563eb; border: 1px solid #bfdbfe; }
 .status-error { background: #fff1f1; color: #c0392b; border: 1px solid #fecaca; }
-.status-ok    { background: var(--verde-claro); color: var(--verde); border: 1px solid #a7d7db; }
+.status-ok    { 
+    background: var(--verde-claro);
+    /* color: var(--verde);  */
+    border: 1px solid var(--verde); 
+}
+
 @keyframes fadeSlide { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
 /* ── Spinner ─────────────────────────────────────────── */
@@ -223,7 +229,7 @@ background: linear-gradient(120deg, var(--morado-oscuro), var(--morado));
     animation: fadeSlide .4s ease;
 }
 .resultado-header {
-    background: linear-gradient(90deg, var(--morado), var(--morado-oscuro));
+    background: var(--morado-oscuro);
     color: #fff;
     padding: 14px 22px;
     display: flex;
@@ -232,12 +238,20 @@ background: linear-gradient(120deg, var(--morado-oscuro), var(--morado));
     font-size: .95rem;
     font-weight: 600;
 }
-.resultado-header span { font-size: 1.2rem; }
-.table-wrap { overflow-x: auto; }
+
+.resultado-header span { 
+    font-size: 1.2rem; 
+}
+
+.table-wrap { 
+    overflow-x: auto; 
+}
+
 #tabladem {
     width: 100%;
     border-collapse: collapse;
-    font-size: .82rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: .95rem;
 }
 #tabladem thead th {
     background: #2c3345;
@@ -247,18 +261,18 @@ background: linear-gradient(120deg, var(--morado-oscuro), var(--morado));
     font-size: .78rem;
     letter-spacing: .04em;
     text-transform: uppercase;
-    text-align: left;
+    text-align: center;
     white-space: nowrap;
 }
 #tabladem tbody td {
-    padding: 10px 14px;
+    padding: 12px 14px;
     border-bottom: 1px solid var(--borde);
-    color: var(--texto);
+    color: #3d3226;        /* color fijo, ya no depende de var(--texto) */
+    text-align: center;
 }
 #tabladem tbody tr:last-child td { border-bottom: none; }
 #tabladem tbody tr:hover { background: var(--morado-claro); transition: background .15s; }
-#tabladem tbody td:first-child { font-family: 'Courier New', monospace; font-weight: 700; color: var(--morado); }
-
+#tabladem tbody td:first-child { font-family: 'Poppins', sans-serif; font-weight: 700; color: #6b4a2f; } /* color fijo, ya no var(--morado) */
 /* ── Mapa ─────────────────────────────────────────────── */
 .mapa-wrap {
     margin-top: 20px;
@@ -984,10 +998,10 @@ max-width:320px;
         <h2>Ubicación fuera de cobertura</h2>
         <p>
             Tu ubicación no pertenece a los límites del actual Marco Geográfico 
-            de Participación Ciudadana.
+            Electoral.
         </p>
 
-        <a href="https://scmgpc.iecm.mx/#" target="_blank" class="modal-link">
+        <a href="https://www.iecm.mx/www/scmgel/" target="_blank" class="modal-link">
             Consultar más información
         </a>
 
@@ -1020,7 +1034,7 @@ max-width:320px;
 
         <div class="header-text">
             <h1>Búsqueda por Ubicación en Tiempo Real</h1>
-            <p>Sistema de Consulta del Marco Geográfico de Participación Ciudadana de la Ciudad de México</p>
+            <p>Sistema de Consulta del Marco Geográfico Electoral de la Ciudad de México</p>
         </div>
     </div>
 </div>
@@ -1092,7 +1106,7 @@ max-width:320px;
 </div>
 
 <div class="footer">
-    Instituto Electoral de la Ciudad de México &nbsp;·&nbsp; Sistema de Consulta del Marco Geográfico de Participación Ciudadana de la Ciudad de México
+    Instituto Electoral de la Ciudad de México &nbsp;·&nbsp; Sistema de Consulta del Marco Geográfico Electoral de la Ciudad de México
 </div>
 
 <script>
@@ -1104,10 +1118,10 @@ const API_PROXY_URL = '/api-proxy.php';              // Desarrollo/Producción
 var TABLE    = 'secciones';      // ajusta si tu tabla tiene otro nombre en la API
 var TABLE_MESAS = 'mesas_2396';
 var MOSTRAR_MESAS = false;
-var UTS_EXCEPCION_MESAS = ['15-034', '15-027']; // estas UTs muestran mesas aunque MOSTRAR_MESAS sea false
+var SECCIONES_EXCEPCION_MESAS = ['034', '027']; // ajusta a los valores reales de "seccion"
 
-function mesasHabilitadas(claveUT) {
-    return MOSTRAR_MESAS || UTS_EXCEPCION_MESAS.indexOf(claveUT) !== -1;
+function mesasHabilitadas(seccion) {
+    return MOSTRAR_MESAS || SECCIONES_EXCEPCION_MESAS.indexOf(seccion) !== -1;
 }
 
 /* ── Helpers UI ─────────────────────────────────────── */
@@ -1207,14 +1221,11 @@ function buscarPorUbicacion() {
 function renderTabla(feature) {
     var p = feature.properties || {};
     var campos = [
-        ['Clave UT',      p.cve_ut     || '—'],
-        ['Nombre',        p.nombre     || '—'],
-        ['Demarcación',   p.dem_territ || '—'],
-        ['Distrito Local',p.dtto_loc   || '—'],
-        ['Secciones Completas',     p.secciones  || '—'],
-        ['Secciones Parciales',p.secciones1 || '—'],
-        ['Tipo UT',       p.tipo_ut    || '—'],
-    ];
+        ['Sección',        p.seccion    || '—'],
+        ['Demarcación',    p.nombre     || '—'],
+        ['Distrito Local', p.distrito_l || '—'],
+        ['Municipio',      p.municipio  || '—'],
+    ];          
     
     // Crear la tabla HTML
     var tablaHTML = '<table id="tabladem"><thead><tr>' +
@@ -1242,8 +1253,8 @@ function mostrarListaUTs(features, initialLat, initialLon) {
     features.forEach(function(feature, idx) {
         var p = feature.properties || {};
         html += '<div class="ut-item" onclick="seleccionarUT(' + idx + ', ' + initialLat + ', ' + initialLon + ')">' +
-                    '<strong>' + (p.nombre || '—') + '</strong>' +
-                    '<span class="ut-clave">' + (p.cve_ut || '—') + '</span>' +
+                    '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+                    '<span class="ut-clave">Distrito Local ' + (p.distrito_l || '—') + '</span>' +
                 '</div>';
     });
     
@@ -1520,17 +1531,11 @@ function pintarMapa(feature, mapId, wrapId, userLat, userLon) {
     // ── InfoWindow ──
     var iwContent =
         '<div class="iw-custom">' +
-        '<h4>' + (p.nombre || '—') + '</h4>' +
+        '<h4>Sección ' + (p.seccion || '—') + '</h4>' +
         '<table>' +
-        '<tr><td>Entidad</td><td>'            + (p.entidad    ||'—') + '</td></tr>' +
-        '<tr><td>Cve. Demarcación</td><td>'   + (p.cve_demarc ||'—') + '</td></tr>' +
-        '<tr><td>Demarcación</td><td>'        + (p.dem_territ ||'—') + '</td></tr>' +
-        '<tr><td>Distrito Local</td><td>'     + (p.dtto_loc   ||'—') + '</td></tr>' +
-        '<tr><td>Cve. UT</td><td>'            + (p.cve_ut     ||'—') + '</td></tr>' +
-        '<tr><td>Seccion Electoral</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
-        '<tr><td>Secciones Completas</td><td>'          + (p.secciones  ||'—') + '</td></tr>' +
-        '<tr><td>Secciones Parciales</td><td>'     + (p.secciones1 ||'—') + '</td></tr>' +
-        '<tr><td>Tipo UT</td><td>'            + (p.tipo_ut    ||'—') + '</td></tr>' +
+        '<tr><td>Demarcación</td><td>'    + (p.nombre     || '—') + '</td></tr>' +
+        '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
+        '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
         '</table></div>';
 
     var infoWindow = new google.maps.InfoWindow({
@@ -1585,10 +1590,10 @@ function pintarMapa(feature, mapId, wrapId, userLat, userLon) {
         });
         if (isTouchDevice) return;
         hoverPanel.innerHTML =
-            '<strong>' + (p.nombre || '—') + '</strong>' +
-            'Clave: ' + (p.cve_ut    || '—') + '<br>' +
-            'Demarcación: '  + (p.dem_territ || '—') + '<br>' +
-            'Tipo: '  + (p.tipo_ut    || '—');
+            '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+            'Demarcación: ' + (p.nombre     || '—') + '<br>' +
+            'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
+            'Municipio: '      + (p.municipio  || '—');
         hoverPanel.style.display = 'block';
     });
 
@@ -1621,7 +1626,7 @@ function confirmarUbicacion(lat, lon) {
             var resp = JSON.parse(responseText);
             
             if (status !== 200) {
-                setStatus('error', 'Error del servidor: ' + status);
+                setStatus('error', 'Error ubicacion fuera de cobertura');
                 mostrarModalFuera();
                 fetch("contador.php?tipo=fuera").catch(function(){});
                 return;
@@ -1645,14 +1650,14 @@ function confirmarUbicacion(lat, lon) {
             
             // Mostrar la UT confirmada en la tabla
             var feature = resp.features[0];
-            var claveUT = (feature.properties || {}).cve_ut || '';
-            window._utIdActual = feature.id; // AGREGA ESTA LÍNEA
-            registrarMetrica(feature.id, 'busquedas_ubicacion'); // AGREGA ESTA LÍNEA
+            var seccionActual = (feature.properties || {}).seccion || '';
+            window._utIdActual = feature.id;
+            registrarMetrica(feature.id, 'busquedas_ubicacion');
             renderTabla(feature);
             // if (MOSTRAR_MESAS) {
             //     document.getElementById('nota_mesas').classList.add('visible');
             // }
-            if (mesasHabilitadas(claveUT)) {
+            if (mesasHabilitadas(seccionActual)) {
                 document.getElementById('nota_mesas').classList.add('visible');
             } else {
                 document.getElementById('nota_mesas').classList.remove('visible');
@@ -1706,18 +1711,10 @@ function confirmarUbicacion(lat, lon) {
                 // 6. CREAR NUEVO INFOWINDOW CON LOS DATOS ACTUALIZADOS
                 var p = feature.properties || {};
                 var iwContent =
-                    '<div class="iw-custom">' +
-                    '<h4>' + (p.nombre || '—') + '</h4>' +
-                    '<table>' +
-                    '<tr><td>Entidad</td><td>'            + (p.entidad    ||'—') + '</td></tr>' +
-                    '<tr><td>Cve. Demarcación</td><td>'   + (p.cve_demarc ||'—') + '</td></tr>' +
-                    '<tr><td>Demarcación</td><td>'        + (p.dem_territ ||'—') + '</td></tr>' +
-                    '<tr><td>Distrito Local</td><td>'     + (p.dtto_loc   ||'—') + '</td></tr>' +
-                    '<tr><td>Cve. UT</td><td>'            + (p.cve_ut     ||'—') + '</td></tr>' +
-                    '<tr><td>Seccion Electoral</td><td>' + (p.nombre     ||'—') + '</td></tr>' +
-                    '<tr><td>Secciones Completas</td><td>'          + (p.secciones  ||'—') + '</td></tr>' +
-                    '<tr><td>Secciones Parciales</td><td>'     + (p.secciones1 ||'—') + '</td></tr>' +
-                    '<tr><td>Tipo UT</td><td>'            + (p.tipo_ut    ||'—') + '</td></tr>' +
+                    '<div class="iw-custom"><h4>Sección ' + (p.seccion || '—') + '</h4><table>' +
+                    '<tr><td>Demarcación</td><td>' + (p.nombre || '—') + '</td></tr>' +
+                    '<tr><td>Distrito Local</td><td>' + (p.distrito_l || '—') + '</td></tr>' +
+                    '<tr><td>Municipio</td><td>'      + (p.municipio  || '—') + '</td></tr>' +
                     '</table></div>';
                 
                 var newInfoWindow = new google.maps.InfoWindow({
@@ -1747,10 +1744,10 @@ function confirmarUbicacion(lat, lon) {
                     });
                     if (isTouchDevice) return;
                     hoverPanel.innerHTML =
-                        '<strong>' + (p.nombre || '—') + '</strong>' +
-                        'Clave: ' + (p.cve_ut    || '—') + '<br>' +
-                        'Demarcación: '  + (p.dem_territ || '—') + '<br>' +
-                        'Tipo: '  + (p.tipo_ut    || '—');
+                        '<strong>Sección ' + (p.seccion || '—') + '</strong>' +
+                        'Demarcación: ' + (p.nombre || '—') + '<br>' +
+                        'Distrito Local: ' + (p.distrito_l || '—') + '<br>' +
+                        'Municipio: '      + (p.municipio  || '—');
                     hoverPanel.style.display = 'block';
                 });
                 
@@ -1779,8 +1776,8 @@ function confirmarUbicacion(lat, lon) {
                 // if (MOSTRAR_MESAS && claveUT) {
                 //     cargarMesas(map, claveUT, lat, lon);
                 // }
-                if (claveUT && mesasHabilitadas(claveUT)) {
-                    cargarMesas(map, claveUT, lat, lon);
+                if (seccionActual && mesasHabilitadas(seccionActual)) {
+                    cargarMesas(map, seccionActual, lat, lon);
                 }
 
 
@@ -1889,7 +1886,7 @@ function getMesaClass(mesa) {
 //         }
 //     });
 // }
-function cargarMesas(map, claveUT, userLat, userLon) {
+function cargarMesas(map, seccion, userLat, userLon) {
     _mesaMarkers.forEach(function(m) { m.map = null; });
     _mesaMarkers = [];
 
@@ -1899,12 +1896,12 @@ function cargarMesas(map, claveUT, userLat, userLon) {
         window._mesaClusterer = null;
     }
 
-    apiGet('filter_2/' + TABLE_MESAS, { claveut: claveUT }, function(status, responseText) {
+    apiGet('filter_2/' + TABLE_MESAS, { seccion: seccion }, function(status, responseText) {
         try {
             var resp = JSON.parse(responseText);
 
             if (!resp.features || resp.features.length === 0) {
-                setStatus('ok', '✓ Ubicación confirmada. No se encontraron mesas para esta UT.');
+                setStatus('ok', '✓ Ubicación confirmada. No se encontraron mesas para esta sección.');
                 document.getElementById('nota_mesas').classList.remove('visible');
                 return;
             }
